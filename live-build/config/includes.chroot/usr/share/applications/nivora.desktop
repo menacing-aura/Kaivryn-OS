@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Nivora Core
+Comment=Check the Nivora AI system layer
+Exec=konsole -e nivora status
+Icon=preferences-system
+Terminal=false
+Categories=System;
+Keywords=AI;Nivora;System;

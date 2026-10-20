@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="80%">
+      <stop offset="0%" stop-color="#263457"/>
+      <stop offset="55%" stop-color="#11172b"/>
+      <stop offset="100%" stop-color="#070a12"/>
+    </radialGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#b9c8ff"/>
+      <stop offset="100%" stop-color="#6878ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <circle cx="960" cy="500" r="290" fill="none" stroke="#ffffff" stroke-opacity=".045" stroke-width="2"/>
+  <circle cx="960" cy="500" r="210" fill="none" stroke="#ffffff" stroke-opacity=".06" stroke-width="2"/>
+  <path d="M815 620 L960 335 L1105 620 L1026 620 L960 486 L894 620 Z" fill="url(#glow)" opacity=".94"/>
+  <circle cx="960" cy="500" r="26" fill="#f5f7ff"/>
+  <text x="960" y="735" text-anchor="middle" fill="#f5f7ff" font-family="sans-serif" font-size="54" font-weight="300" letter-spacing="16">NIVORA</text>
+  <text x="960" y="785" text-anchor="middle" fill="#b7bed8" font-family="sans-serif" font-size="20" letter-spacing="5">AI-NATIVE • USER-CONTROLLED</text>
+</svg>

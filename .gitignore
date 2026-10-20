@@ -1,0 +1,8 @@
+.build/
+dist/
+*.iso
+*.img
+*.log
+.DS_Store
+__pycache__/
+*.pyc

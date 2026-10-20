@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+"""Command-line client for Nivora Core."""
+
+import json
+import socket
+import sys
+
+SOCKET_PATH = "/run/nivora/core.sock"
+COMMANDS = {"status", "ping", "permissions"}
+
+
+def request(action):
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+        client.settimeout(2.0)
+        client.connect(SOCKET_PATH)
+        client.sendall(json.dumps({"action": action}).encode("utf-8"))
+        data = client.recv(65536)
+    return json.loads(data.decode("utf-8"))
+
+
+def print_status(data):
+    permissions = data.get("permissions", {})
+    print(f"Nivora Core {data.get('version', 'unknown')}")
+    print(f"AI provider: {data.get('ai_provider', 'unknown')}")
+    print(f"Cloud AI: {'enabled' if data.get('cloud_enabled') else 'disabled'}")
+    print("Permissions:")
+    for name in ("read", "propose", "execute"):
+        print(f"  {name:8} {'yes' if permissions.get(name) else 'no'}")
+
+
+def main():
+    action = sys.argv[1] if len(sys.argv) > 1 else "status"
+
+    if action not in COMMANDS:
+        print("Usage: nivora [status|ping|permissions]", file=sys.stderr)
+        return 2
+
+    try:
+        data = request(action)
+    except (FileNotFoundError, ConnectionRefusedError, socket.timeout) as exc:
+        print(f"Nivora Core is unavailable: {exc}", file=sys.stderr)
+        return 1
+
+    if action == "status" and data.get("ok"):
+        print_status(data)
+    elif action == "ping" and data.get("ok"):
+        print(f"{data.get('reply')} ({data.get('version')})")
+    else:
+        print(json.dumps(data, indent=2, sort_keys=True))
+
+    return 0 if data.get("ok") else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,45 @@
+name: Build Nivora ISO
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "live-build/**"
+      - "scripts/**"
+      - "VERSION"
+      - ".github/workflows/build-iso.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build amd64 live ISO
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install live-build toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y             live-build             xorriso             isolinux             syslinux-common             grub-pc-bin             grub-efi-amd64-bin             mtools
+
+      - name: Build Nivora
+        run: sudo ./scripts/build.sh
+
+      - name: Show artifacts
+        run: ls -lh dist/
+
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: nivora-os-amd64
+          path: |
+            dist/*.iso
+            dist/*.sha256
+          if-no-files-found: error
+          retention-days: 14

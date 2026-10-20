@@ -1,0 +1,4 @@
+NAME="Nivora OS"
+VERSION="0.1.0-alpha"
+BASE="Debian 13 (Trixie)"
+ARCH="amd64"
