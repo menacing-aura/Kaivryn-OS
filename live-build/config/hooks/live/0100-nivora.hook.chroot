@@ -1,9 +1,0 @@
-#!/bin/sh
-set -eu
-
-systemctl enable NetworkManager.service >/dev/null 2>&1 || true
-systemctl enable sddm.service >/dev/null 2>&1 || true
-systemctl enable nivora-core.service >/dev/null 2>&1 || true
-
-chmod 0755 /usr/local/bin/nivora /usr/lib/nivora/core.py
-printf '%s\n' 'Nivora OS 0.1 Alpha' > /etc/motd

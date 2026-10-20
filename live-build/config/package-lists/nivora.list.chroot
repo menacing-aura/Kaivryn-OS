@@ -20,6 +20,10 @@ pipewire
 wireplumber
 firefox-esr
 
+calamares-settings-debian
+parted
+dosfstools
+
 sudo
 curl
 git

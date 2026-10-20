@@ -1,4 +1,4 @@
-name: Build Nivora ISO
+name: Build Kaivryn ISO
 
 on:
   workflow_dispatch:
@@ -53,7 +53,7 @@ jobs:
       - name: Upload ISO
         uses: actions/upload-artifact@v4
         with:
-          name: nivora-os-amd64
+          name: kaivryn-os-amd64
           path: |
             dist/*.iso
             dist/*.sha256

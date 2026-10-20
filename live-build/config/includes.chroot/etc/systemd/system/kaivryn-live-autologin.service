@@ -1,0 +1,13 @@
+[Unit]
+Description=Kaivryn live-session autologin
+ConditionKernelCommandLine=boot=live
+Before=sddm.service display-manager.service
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/kaivryn-live-autologin
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical.target

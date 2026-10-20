@@ -1,0 +1,33 @@
+#!/bin/sh
+set -eu
+
+systemctl enable NetworkManager.service >/dev/null 2>&1 || true
+systemctl enable sddm.service >/dev/null 2>&1 || true
+systemctl enable nivora-core.service >/dev/null 2>&1 || true
+systemctl enable kaivryn-live-autologin.service >/dev/null 2>&1 || true
+
+# Debian's Calamares settings are our installation engine, but expose the
+# Kaivryn launcher instead of a second "Install Debian" desktop shortcut.
+rm -f /etc/xdg/autostart/calamares-desktop-icon.desktop
+rm -f /usr/share/applications/calamares-install-debian.desktop
+
+chmod 0755 /usr/local/bin/nivora /usr/lib/nivora/core.py
+chmod 0755 /usr/local/bin/calamares-install-kaivryn
+chmod 0755 /usr/local/sbin/kaivryn-live-autologin
+chmod 0755 /etc/skel/Desktop/calamares-install-kaivryn.desktop
+
+# Keep Debian's tested installer plumbing, but present Kaivryn product strings.
+BRANDING=/etc/calamares/branding/debian/branding.desc
+if [ -f "$BRANDING" ]; then
+  sed -i -E \
+    -e 's|^([[:space:]]*)productName:.*|\1productName: Kaivryn OS|' \
+    -e 's|^([[:space:]]*)shortProductName:.*|\1shortProductName: Kaivryn|' \
+    -e 's|^([[:space:]]*)version:.*|\1version: 0.1 Alpha|' \
+    -e 's|^([[:space:]]*)shortVersion:.*|\1shortVersion: 0.1|' \
+    -e 's|^([[:space:]]*)versionedName:.*|\1versionedName: Kaivryn OS 0.1 Alpha|' \
+    -e 's|^([[:space:]]*)shortVersionedName:.*|\1shortVersionedName: Kaivryn 0.1|' \
+    -e 's|^([[:space:]]*)bootloaderEntryName:.*|\1bootloaderEntryName: Kaivryn OS|' \
+    "$BRANDING"
+fi
+
+printf '%s\n' 'Kaivryn OS 0.1 Alpha' > /etc/motd

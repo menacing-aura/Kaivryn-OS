@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+# Debian's wrapper handles the live-media fstab workaround, display access,
+# and privilege escalation expected by its Calamares settings.
+exec /usr/bin/calamares-install-debian "$@"

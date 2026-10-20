@@ -2,13 +2,13 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-BUILD_DIR="${NIVORA_BUILD_DIR:-$ROOT_DIR/.build/live}"
+BUILD_DIR="${KAIVRYN_BUILD_DIR:-${NIVORA_BUILD_DIR:-$ROOT_DIR/.build/live}}"
 DIST_DIR="$ROOT_DIR/dist"
 PROFILE_DIR="$ROOT_DIR/live-build"
 VERSION="$(tr -d '[:space:]' < "$ROOT_DIR/VERSION")"
 
 if [[ "${EUID}" -ne 0 ]]; then
-  echo "Nivora ISO builds require root. Run: sudo ./scripts/build.sh" >&2
+  echo "Kaivryn ISO builds require root. Run: sudo ./scripts/build.sh" >&2
   exit 1
 fi
 
@@ -25,7 +25,19 @@ cp -a "$PROFILE_DIR/." "$BUILD_DIR/"
 
 cd "$BUILD_DIR"
 
-lb config   --mode debian   --distribution trixie   --architecture amd64   --binary-image iso-hybrid   --archive-areas "main contrib non-free-firmware"   --debian-installer none   --apt-recommends true   --bootloaders "syslinux grub-efi"   --bootappend-live "boot=live components quiet splash username=nivora hostname=nivora"   --iso-application "Nivora OS"   --iso-publisher "Nivora OS Project"   --iso-volume "NIVORA_01"
+lb config \
+  --mode debian \
+  --distribution trixie \
+  --architecture amd64 \
+  --binary-image iso-hybrid \
+  --archive-areas "main contrib non-free-firmware" \
+  --debian-installer none \
+  --apt-recommends true \
+  --bootloaders "syslinux grub-efi" \
+  --bootappend-live "boot=live components quiet splash username=kaivryn hostname=kaivryn" \
+  --iso-application "Kaivryn OS" \
+  --iso-publisher "Kaivryn OS Project" \
+  --iso-volume "KAIVRYN_01"
 
 lb build
 
@@ -35,11 +47,11 @@ if [[ -z "$ISO_PATH" ]]; then
   exit 1
 fi
 
-OUTPUT="$DIST_DIR/nivora-os-$VERSION-amd64.iso"
+OUTPUT="$DIST_DIR/kaivryn-os-$VERSION-amd64.iso"
 cp "$ISO_PATH" "$OUTPUT"
 sha256sum "$OUTPUT" > "$OUTPUT.sha256"
 
 echo
-echo "Nivora ISO ready:"
+echo "Kaivryn ISO ready:"
 echo "  $OUTPUT"
 echo "  $OUTPUT.sha256"

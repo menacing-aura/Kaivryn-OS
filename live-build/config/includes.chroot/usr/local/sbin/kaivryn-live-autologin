@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+install -d -m 0755 /etc/sddm.conf.d
+cat > /etc/sddm.conf.d/10-kaivryn-live.conf <<'EOF'
+[Autologin]
+User=kaivryn
+Session=plasma
+Relogin=false
+
+[Theme]
+Current=breeze
+EOF
