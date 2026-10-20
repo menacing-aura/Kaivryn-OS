@@ -3,7 +3,7 @@ name: Build Nivora ISO
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [Core]
     paths:
       - "live-build/**"
       - "scripts/**"
@@ -25,10 +25,24 @@ jobs:
 
       - name: Build inside Debian 13
         run: |
-          docker run --rm --privileged             -v "$PWD:/workspace"             -w /workspace             debian:13-slim             bash -lc '
+          docker run --rm --privileged \
+            -v "$PWD:/workspace" \
+            -w /workspace \
+            debian:13-slim \
+            bash -lc '
               set -euo pipefail
               apt-get update
-              DEBIAN_FRONTEND=noninteractive apt-get install -y                 live-build                 xorriso                 isolinux                 syslinux-common                 grub-pc-bin                 grub-efi-amd64-bin                 mtools                 squashfs-tools                 rsync                 ca-certificates
+              DEBIAN_FRONTEND=noninteractive apt-get install -y \
+                live-build \
+                xorriso \
+                isolinux \
+                syslinux-common \
+                grub-pc-bin \
+                grub-efi-amd64-bin \
+                mtools \
+                squashfs-tools \
+                rsync \
+                ca-certificates
               echo "Using: $(lb --version)"
               ./scripts/build.sh
             '
