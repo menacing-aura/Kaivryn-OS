@@ -23,13 +23,15 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
-      - name: Install live-build toolchain
+      - name: Build inside Debian 13
         run: |
-          sudo apt-get update
-          sudo apt-get install -y             live-build             xorriso             isolinux             syslinux-common             grub-pc-bin             grub-efi-amd64-bin             mtools
-
-      - name: Build Nivora
-        run: sudo ./scripts/build.sh
+          docker run --rm --privileged             -v "$PWD:/workspace"             -w /workspace             debian:13-slim             bash -lc '
+              set -euo pipefail
+              apt-get update
+              DEBIAN_FRONTEND=noninteractive apt-get install -y                 live-build                 xorriso                 isolinux                 syslinux-common                 grub-pc-bin                 grub-efi-amd64-bin                 mtools                 squashfs-tools                 rsync                 ca-certificates
+              echo "Using: $(lb --version)"
+              ./scripts/build.sh
+            '
 
       - name: Show artifacts
         run: ls -lh dist/

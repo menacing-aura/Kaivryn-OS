@@ -25,18 +25,7 @@ cp -a "$PROFILE_DIR/." "$BUILD_DIR/"
 
 cd "$BUILD_DIR"
 
-lb config \
-  --mode debian \
-  --distribution trixie \
-  --architectures amd64 \
-  --binary-images iso-hybrid \
-  --archive-areas "main contrib non-free-firmware" \
-  --debian-installer none \
-  --apt-recommends true \
-  --bootappend-live "boot=live components quiet splash username=nivora hostname=nivora" \
-  --iso-application "Nivora OS" \
-  --iso-publisher "Nivora OS Project" \
-  --iso-volume "NIVORA_01"
+lb config   --mode debian   --distribution trixie   --architecture amd64   --binary-image iso-hybrid   --archive-areas "main contrib non-free-firmware"   --debian-installer none   --apt-recommends true   --bootloaders "syslinux grub-efi"   --bootappend-live "boot=live components quiet splash username=nivora hostname=nivora"   --iso-application "Nivora OS"   --iso-publisher "Nivora OS Project"   --iso-volume "NIVORA_01"
 
 lb build
 
